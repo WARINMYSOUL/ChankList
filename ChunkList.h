@@ -8,6 +8,7 @@
 #pragma once
 #include <iterator>
 #include <memory>
+#include <list>
 
 namespace fefu_laboratory_two {
 
@@ -144,7 +145,7 @@ namespace fefu_laboratory_two {
                               const ChunkList_const_iterator<ValueType>&);
         friend bool operator>=(const ChunkList_const_iterator<ValueType>&,
                                const ChunkList_const_iterator<ValueType>&);
-        /// operator<=> will be handy
+        /// оператор <=> пригодится
     };
 
     template <typename T, int N, typename Allocator = Allocator<T>>
