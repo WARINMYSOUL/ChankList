@@ -642,15 +642,13 @@ namespace fefu_laboratory_two {
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения ==
         template<class U, class Alloc>
-        friend bool operator==(const ChunkList<U, Alloc> &lhs,
-                               const ChunkList<U, Alloc> &rhs);
+        friend bool operator==(const ChunkList<U, Alloc> &lhs, const ChunkList<U, Alloc> &rhs);
 
         /// @brief Проверяет, не равно ли содержимое lhs и rhs.
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения !=
         template<class U, class Alloc>
-        friend bool operator!=(const ChunkList<U, Alloc> &lhs,
-                               const ChunkList<U, Alloc> &rhs);
+        friend bool operator!=(const ChunkList<U, Alloc> &lhs, const ChunkList<U, Alloc> &rhs);
 
         /// @brief Сравнивает содержимое lhs и rhs лексикографически.
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
@@ -668,20 +666,17 @@ namespace fefu_laboratory_two {
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения >=
         template<class U, class Alloc>
-        friend bool operator>=(const ChunkList<U, Alloc> &lhs,
-                               const ChunkList<U, Alloc> &rhs);
+        friend bool operator>=(const ChunkList<U, Alloc> &lhs, const ChunkList<U, Alloc> &rhs);
 
         /// @brief Сравнивает содержимое lhs и rhs лексикографически.
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения <=
         template<class U, class Alloc>
-        friend bool operator<=(const ChunkList<U, Alloc> &lhs,
-                               const ChunkList<U, Alloc> &rhs);
+        friend bool operator<=(const ChunkList<U, Alloc> &lhs, const ChunkList<U, Alloc> &rhs);
 
         // Оператор сравнения <=>
         template<class U, class Alloc>
-        friend bool operator<=>(const ChunkList<U, Alloc> &lhs,
-                                const ChunkList<U, Alloc> &rhs);
+        friend bool operator<=>(const ChunkList<U, Alloc> &lhs, const ChunkList<U, Alloc> &rhs);
     };
 
 /// ФУНКЦИИ, НЕ ЯВЛЯЮЩИЕСЯ ЧЛЕНАМИ
@@ -709,4 +704,3 @@ namespace fefu_laboratory_two {
     template<class T, class Alloc, class Pred>
     typename ChunkList<T, Alloc>::size_type erase_if(ChunkList<T, Alloc> &c, Pred pred);
 }
-/// пространство имен fefu_laboratory_two
