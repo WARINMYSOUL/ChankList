@@ -1,22 +1,5 @@
 # ninja log v5
-2	438	7238102012375400	CMakeFiles/ChankList.dir/main.cpp.obj	6c05c3ff113f8067
-5	425	7238102012254312	CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj	b86c72c938346e72
-2	119	7237441039070496	CMakeFiles/ChankList.dir/ChunkList.cpp.obj	75cd7704b17cd94f
-438	497	7238102012939245	ChankList.exe	7f7b3dc2bdda9d41
-2	396	7238102045145944	CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj	b86c72c938346e72
-397	457	7238102045705546	ChankList.exe	7f7b3dc2bdda9d41
-2	408	7238102072250649	CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj	b86c72c938346e72
-409	471	7238102072864387	ChankList.exe	7f7b3dc2bdda9d41
-7	411	7238102606819755	CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj	b86c72c938346e72
-2	438	7238102607087424	CMakeFiles/ChankList.dir/main.cpp.obj	6c05c3ff113f8067
-438	499	7238102607662153	ChankList.exe	7f7b3dc2bdda9d41
-5	448	7238119067383658	CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj	b86c72c938346e72
-2	478	7238119067673505	CMakeFiles/ChankList.dir/main.cpp.obj	6c05c3ff113f8067
-478	549	7238119068347996	ChankList.exe	7f7b3dc2bdda9d41
-7	465	7238121445422068	CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj	b86c72c938346e72
 2	501	7238121445776062	CMakeFiles/ChankList.dir/main.cpp.obj	6c05c3ff113f8067
-501	564	7238121446374058	ChankList.exe	7f7b3dc2bdda9d41
-3	391	7238121543244736	CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj	b86c72c938346e72
-391	452	7238121543827998	ChankList.exe	7f7b3dc2bdda9d41
-2	391	7238132704553780	CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj	b86c72c938346e72
-391	452	7238132705126911	ChankList.exe	7f7b3dc2bdda9d41
+2	465	7238234891274833	CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj	b86c72c938346e72
+2	119	7237441039070496	CMakeFiles/ChankList.dir/ChunkList.cpp.obj	75cd7704b17cd94f
+465	534	7238234891931666	ChankList.exe	7f7b3dc2bdda9d41
