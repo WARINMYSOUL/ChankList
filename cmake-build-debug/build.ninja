@@ -55,6 +55,12 @@ build CMakeFiles/ChankList.dir/main.cpp.obj: CXX_COMPILER__ChankList_unscanned_D
   OBJECT_DIR = CMakeFiles\ChankList.dir
   OBJECT_FILE_DIR = CMakeFiles\ChankList.dir
 
+build CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj: CXX_COMPILER__ChankList_unscanned_Debug C$:/JetBrainsDirectory/Clion/ChankList/Υσινÿ.cpp || cmake_object_order_depends_target_ChankList
+  DEP_FILE = CMakeFiles\ChankList.dir\Υσινÿ.cpp.obj.d
+  FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\ChankList.dir
+  OBJECT_FILE_DIR = CMakeFiles\ChankList.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target ChankList
@@ -63,7 +69,7 @@ build CMakeFiles/ChankList.dir/main.cpp.obj: CXX_COMPILER__ChankList_unscanned_D
 #############################################
 # Link the executable ChankList.exe
 
-build ChankList.exe: CXX_EXECUTABLE_LINKER__ChankList_Debug CMakeFiles/ChankList.dir/main.cpp.obj
+build ChankList.exe: CXX_EXECUTABLE_LINKER__ChankList_Debug CMakeFiles/ChankList.dir/main.cpp.obj CMakeFiles/ChankList.dir/Υσινÿ.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\ChankList.dir

@@ -39,6 +39,8 @@ namespace fefu_laboratory_two {
 
     template<typename ValueType>
     class ChunkList_iterator {
+    private:
+        ValueType* iterator = nullptr;
     public:
         using iterator_category = std::random_access_iterator_tag;
         using value_type = ValueType;
@@ -59,15 +61,21 @@ namespace fefu_laboratory_two {
         ~ChunkList_iterator();
 
         // Реализация функции swap
-        friend void swap(ChunkList_iterator<ValueType> &, ChunkList_iterator<ValueType> &);
+        friend void swap(ChunkList_iterator<ValueType> &lhs, ChunkList_iterator<ValueType> &rhs) {
+
+        }
 
         // Реализация оператора ==
-        friend bool operator==(const ChunkList_iterator<ValueType> &,
-                               const ChunkList_iterator<ValueType> &);
+        friend bool operator==(const ChunkList_iterator<ValueType> &lhs,
+                               const ChunkList_iterator<ValueType> &rhs) {
+            return lhs.iterator == rhs.iterator;
+        }
 
         // Реализация оператора !=
-        friend bool operator!=(const ChunkList_iterator<ValueType> &,
-                               const ChunkList_iterator<ValueType> &);
+        friend bool operator!=(const ChunkList_iterator<ValueType> &lhs,
+                               const ChunkList_iterator<ValueType> &rhs) {
+            return lhs.iterator != rhs.iterator;
+        }
 
         // Реализация оператора разыменования *
         reference operator*() const;
@@ -106,29 +114,40 @@ namespace fefu_laboratory_two {
         reference operator[](const difference_type &);
 
         // Реализация оператора <
-        friend bool operator<(const ChunkList_iterator<ValueType> &,
-                              const ChunkList_iterator<ValueType> &);
+        friend bool operator<(const ChunkList_iterator<ValueType> &lhs,
+                               const ChunkList_iterator<ValueType> &rhs) {
+            return lhs.iterator < rhs.iterator;
+        }
 
         // Реализация оператора <=
-        friend bool operator<=(const ChunkList_iterator<ValueType> &,
-                               const ChunkList_iterator<ValueType> &);
+        friend bool operator<=(const ChunkList_iterator<ValueType> &lhs,
+                               const ChunkList_iterator<ValueType> &rhs) {
+            return lhs.iterator <= rhs.iterator;
+        }
 
         // Реализация оператора >
-        friend bool operator>(const ChunkList_iterator<ValueType> &,
-                              const ChunkList_iterator<ValueType> &);
+        friend bool operator>(const ChunkList_iterator<ValueType> &lhs,
+                               const ChunkList_iterator<ValueType> &rhs) {
+            return lhs.iterator > rhs.iterator;
+        }
 
         // Реализация оператора >=
-        friend bool operator>=(const ChunkList_iterator<ValueType> &,
-                               const ChunkList_iterator<ValueType> &);
+        friend bool operator>=(const ChunkList_iterator<ValueType> &lhs,
+                              const ChunkList_iterator<ValueType> &rhs) {
+            return lhs.iterator >= rhs.iterator;
+        }
 
         // Реализация оператора <=>
-        friend bool operator<=>(const ChunkList_iterator<ValueType> &,
-                                const ChunkList_iterator<ValueType> &);
+        friend bool operator<=>(const ChunkList_iterator<ValueType> &lhs,
+                              const ChunkList_iterator<ValueType> &rhs) {
+            return lhs.iterator <=> rhs.iterator;
+        }
     };
 
     template<typename ValueType>
     class ChunkList_const_iterator {
-        /// Не следует давать не константные ссылки на значение
+    private:
+        const ValueType* iterator = nullptr;
     public:
         using iterator_category = std::random_access_iterator_tag;
         using value_type = ValueType;
@@ -155,16 +174,20 @@ namespace fefu_laboratory_two {
         ~ChunkList_const_iterator();
 
         // Реализация функции swap
-        friend void swap(ChunkList_const_iterator<ValueType> &,
-                         ChunkList_const_iterator<ValueType> &);
+        friend void swap(ChunkList_const_iterator<ValueType> &lhs,
+                         ChunkList_const_iterator<ValueType> &rhs);
 
         // Реализация оператора ==
-        friend bool operator==(const ChunkList_const_iterator<ValueType> &,
-                               const ChunkList_const_iterator<ValueType> &);
+        friend bool operator==(const ChunkList_const_iterator<ValueType> &lhs,
+                               const ChunkList_const_iterator<ValueType> &rhs) {
+            return lhs.iterator == rhs.iterator;
+        }
 
         // Реализация оператора !=
-        friend bool operator!=(const ChunkList_const_iterator<ValueType> &,
-                               const ChunkList_const_iterator<ValueType> &);
+        friend bool operator!=(const ChunkList_const_iterator<ValueType> &lhs,
+                               const ChunkList_const_iterator<ValueType> &rhs) {
+            return lhs.iterator != rhs.iterator;
+        }
 
         // Реализация оператора разыменования *
         reference operator*() const;
@@ -203,24 +226,34 @@ namespace fefu_laboratory_two {
         reference operator[](const difference_type &);
 
         // Реализация оператора <
-        friend bool operator<(const ChunkList_const_iterator<ValueType> &,
-                              const ChunkList_const_iterator<ValueType> &);
+        friend bool operator<(const ChunkList_const_iterator<ValueType> &lhs,
+                               const ChunkList_const_iterator<ValueType> &rhs) {
+            return lhs.iterator < rhs.iterator;
+        }
 
         // Реализация оператора <=
-        friend bool operator<=(const ChunkList_const_iterator<ValueType> &,
-                               const ChunkList_const_iterator<ValueType> &);
+        friend bool operator<=(const ChunkList_const_iterator<ValueType> &lhs,
+                               const ChunkList_const_iterator<ValueType> &rhs) {
+            return lhs.iterator <= rhs.iterator;
+        }
 
         // Реализация оператора >
-        friend bool operator>(const ChunkList_const_iterator<ValueType> &,
-                              const ChunkList_const_iterator<ValueType> &);
+        friend bool operator>(const ChunkList_const_iterator<ValueType> &lhs,
+                               const ChunkList_const_iterator<ValueType> &rhs) {
+            return lhs.iterator > rhs.iterator;
+        }
 
         // Реализация оператора >=
-        friend bool operator>=(const ChunkList_const_iterator<ValueType> &,
-                               const ChunkList_const_iterator<ValueType> &);
+        friend bool operator>=(const ChunkList_const_iterator<ValueType> &lhs,
+                               const ChunkList_const_iterator<ValueType> &rhs) {
+            return lhs.iterator >= rhs.iterator;
+        }
 
         // Реализация оператора <=>
-        friend bool operator<=>(const ChunkList_const_iterator<ValueType> &,
-                                const ChunkList_const_iterator<ValueType> &);
+        friend bool operator<=>(const ChunkList_const_iterator<ValueType> &lhs,
+                               const ChunkList_const_iterator<ValueType> &rhs) {
+            return lhs.iterator <=> rhs.iterator;
+        }
     };
 
     template<typename T, int N, typename Allocator = Allocator<T>>
@@ -758,7 +791,6 @@ namespace fefu_laboratory_two {
 // Реализация функции swap
     template<typename ValueType>
     void swap(ChunkList_iterator<ValueType> &lhs, ChunkList_iterator<ValueType> &rhs) {
-        using std::swap;
         swap(lhs.iterator_category, rhs.iterator_category);
         swap(lhs.value_type, rhs.value_type);
         swap(lhs.difference_type, rhs.difference_type);
@@ -766,34 +798,20 @@ namespace fefu_laboratory_two {
         swap(lhs.reference, rhs.reference);
     }
 
-// Реализация оператора ==
-    template<typename ValueType>
-    bool operator==(const ChunkList_iterator<ValueType> &lhs,
-                    const ChunkList_iterator<ValueType> &rhs) {
-        return lhs.pointer == rhs.pointer;
-    }
-
-// Реализация оператора !=
-    template<typename ValueType>
-    bool operator!=(const ChunkList_iterator<ValueType> &lhs,
-                    const ChunkList_iterator<ValueType> &rhs) {
-        return !(lhs == rhs);
-    }
-
-// Реализация оператора разыменования *
+    // Реализация оператора разыменования *
     template<typename ValueType>
     typename ChunkList_iterator<ValueType>::reference ChunkList_iterator<ValueType>::operator*() const {
 
     }
 
-// Реализация оператора ->
+    // Реализация оператора ->
     template<typename ValueType>
     typename ChunkList_iterator<ValueType>::pointer ChunkList_iterator<ValueType>::operator->() const {
         return *this;
     }
 
-// Реализация оператора префиксного инкремента
-//Вопрос: что здесь должно быть?
+    // Реализация оператора префиксного инкремента
+    //Вопрос: что здесь должно быть?
     template<typename ValueType>
     ChunkList_iterator<ValueType> &ChunkList_iterator<ValueType>::operator++() {
         return *this;
@@ -863,42 +881,6 @@ namespace fefu_laboratory_two {
         return *(*this + n);
     }
 
-    // Реализация оператора <
-    template<typename ValueType>
-    bool operator<(const ChunkList_iterator<ValueType> &lhs,
-                   const ChunkList_iterator<ValueType> &rhs) {
-        return lhs.pointer < rhs.pointer;
-    }
-
-// Реализация оператора <=
-    template<typename ValueType>
-    bool operator<=(const ChunkList_iterator<ValueType> &lhs,
-                    const ChunkList_iterator<ValueType> &rhs) {
-        return !(rhs < lhs);
-    }
-
-// Реализация оператора >
-    template<typename ValueType>
-    bool operator>(const ChunkList_iterator<ValueType> &lhs,
-                   const ChunkList_iterator<ValueType> &rhs) {
-        return rhs < lhs;
-    }
-
-// Реализация оператора >=
-    template<typename ValueType>
-    bool operator>=(const ChunkList_iterator<ValueType> &lhs,
-                    const ChunkList_iterator<ValueType> &rhs) {
-        return !(lhs < rhs);
-    }
-
-    // Реализация оператора <=>
-    template<typename ValueType>
-    std::strong_ordering operator<=>(const ChunkList_iterator<ValueType> &lhs,
-                                     const ChunkList_iterator<ValueType> &rhs) {
-        return lhs.pointer <=> rhs.pointer;
-    }
-
-
     // Реализация конструктора по умолчанию
     template<typename ValueType>
     ChunkList_const_iterator<ValueType>::ChunkList_const_iterator() noexcept = default;
@@ -936,39 +918,25 @@ namespace fefu_laboratory_two {
 
     }
 
-// Реализация оператора ==
-    template<typename ValueType>
-    bool operator==(const ChunkList_const_iterator<ValueType> &lhs,
-                    const ChunkList_const_iterator<ValueType> &rhs) {
-        return lhs == rhs;
-    }
-
-// Реализация оператора !=
-    template<typename ValueType>
-    bool operator!=(const ChunkList_const_iterator<ValueType> &lhs,
-                    const ChunkList_const_iterator<ValueType> &rhs) {
-        return !(lhs == rhs);
-    }
-
 // Реализация оператора разыменования *
     template<typename ValueType>
     typename ChunkList_const_iterator<ValueType>::reference ChunkList_const_iterator<ValueType>::operator*() const {
 
     }
 
-// Реализация оператора ->
+    // Реализация оператора ->
     template<typename ValueType>
     typename ChunkList_const_iterator<ValueType>::pointer ChunkList_const_iterator<ValueType>::operator->() const {
 
     }
 
-// Реализация оператора префиксного инкремента
+    // Реализация оператора префиксного инкремента
     template<typename ValueType>
     ChunkList_const_iterator<ValueType> &ChunkList_const_iterator<ValueType>::operator++() {
         return *this;
     }
 
-// Реализация оператора постфиксного инкремента
+    // Реализация оператора постфиксного инкремента
     template<typename ValueType>
     ChunkList_const_iterator<ValueType> ChunkList_const_iterator<ValueType>::operator++(int) {
         ChunkList_const_iterator temp(*this);
@@ -976,13 +944,13 @@ namespace fefu_laboratory_two {
         return temp;
     }
 
-// Реализация оператора префиксного декремента
+    // Реализация оператора префиксного декремента
     template<typename ValueType>
     ChunkList_const_iterator<ValueType> &ChunkList_const_iterator<ValueType>::operator--() {
         return *this;
     }
 
-// Реализация оператора постфиксного декремента
+    // Реализация оператора постфиксного декремента
     template<typename ValueType>
     ChunkList_const_iterator<ValueType> ChunkList_const_iterator<ValueType>::operator--(int) {
         ChunkList_const_iterator temp(*this);
@@ -990,166 +958,117 @@ namespace fefu_laboratory_two {
         return temp;
     }
 
-// Реализация оператора сложения с числом
+    // Реализация оператора сложения с числом
     template<typename ValueType>
     ChunkList_const_iterator<ValueType> ChunkList_const_iterator<ValueType>::operator+(const difference_type &) const {
         return *this;
     }
 
-// Реализация оператора присваивания сложения с числом
+    // Реализация оператора присваивания сложения с числом
     template<typename ValueType>
     ChunkList_const_iterator<ValueType> &ChunkList_const_iterator<ValueType>::operator+=(const difference_type &) {
         return *this;
     }
 
-// Реализация оператора вычитания из числа
+    // Реализация оператора вычитания из числа
     template<typename ValueType>
     ChunkList_const_iterator<ValueType> ChunkList_const_iterator<ValueType>::operator-(const difference_type &) const {
         return *this;
     }
 
-// Реализация оператора присваивания вычитания из числа
+    // Реализация оператора присваивания вычитания из числа
     template<typename ValueType>
     ChunkList_const_iterator<ValueType> &ChunkList_const_iterator<ValueType>::operator-=(const difference_type &) {
         return *this;
     }
 
-// Реализация оператора вычитания двух итераторов
+    // Реализация оператора вычитания двух итераторов
     template<typename ValueType>
     typename ChunkList_const_iterator<ValueType>::difference_type
     ChunkList_const_iterator<ValueType>::operator-(const ChunkList_const_iterator &) const {
         return *this;
     }
 
-// Реализация оператора индексации
+    // Реализация оператора индексации
     template<typename ValueType>
     typename ChunkList_const_iterator<ValueType>::reference
     ChunkList_const_iterator<ValueType>::operator[](const difference_type &) {
         return *this;
     }
 
-// Реализация оператора <
-    template<typename ValueType>
-    bool operator<(const ChunkList_const_iterator<ValueType> &lhs,
-                   const ChunkList_const_iterator<ValueType> &rhs) {
-        return lhs < rhs;
-    }
-
-// Реализация оператора <=
-    template<typename ValueType>
-    bool operator<=(const ChunkList_const_iterator<ValueType> &lhs,
-                    const ChunkList_const_iterator<ValueType> &rhs) {
-        return !(rhs < lhs);
-    }
-
-// Реализация оператора >
-    template<typename ValueType>
-    bool operator>(const ChunkList_const_iterator<ValueType> &lhs,
-                   const ChunkList_const_iterator<ValueType> &rhs) {
-        return rhs < lhs;
-    }
-
-// Реализация оператора >=
-    template<typename ValueType>
-    bool operator>=(const ChunkList_const_iterator<ValueType> &lhs,
-                    const ChunkList_const_iterator<ValueType> &rhs) {
-        return !(lhs < rhs);
-    }
-
-// Реализация оператора <=>
-    template<typename ValueType>
-    std::strong_ordering operator<=>(const ChunkList_const_iterator<ValueType> &lhs,
-                                     const ChunkList_const_iterator<ValueType> &rhs) {
-        return lhs <=> rhs;
-    }
-
-// Конструктор по умолчанию
+    // Конструктор по умолчанию
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::ChunkList() = default;
 
-// Конструктор с аллокатором
+    // Конструктор с аллокатором
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::ChunkList(const Allocator &alloc) {
-//        this->value_type = T;
-//        this->allocator_type = Allocator;
-//        this->size_type = std::size_t;
-//        this->difference_type = std::ptrdiff_t;
-//        this->reference = value_type &;
-//        this->const_reference = const value_type &;
-//        this->pointer = typename std::allocator_traits<Allocator>::pointer;
-//        this->const_pointer = typename std::allocator_traits<Allocator>::const_pointer;
-//        this->iterator = ChunkList_iterator<value_type>;
-//        this->const_iterator = ChunkList_const_iterator<value_type>;
+
     }
 
-// Конструктор с count копиями элементов со значением и аллокатором
+    // Конструктор с count копиями элементов со значением и аллокатором
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::ChunkList(size_type count, const T &value, const Allocator &alloc) {
         // Реализация логики конструктора с count копиями здесь
     }
 
-// Конструктор с count экземплярами T, вставленными по умолчанию
+    // Конструктор с count экземплярами T, вставленными по умолчанию
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::ChunkList(size_type count, const Allocator &alloc) {
         // Реализация логики конструктора с count экземплярами по умолчанию здесь
     }
 
-// Конструктор с содержимым диапазона [first, last)
+    // Конструктор с содержимым диапазона [first, last)
     template<typename T, int N, typename Allocator>
     template<class InputIt>
     ChunkList<T, N, Allocator>::ChunkList(InputIt first, InputIt last, const Allocator &alloc) {
         // Реализация логики конструктора с диапазоном [first, last) здесь
     }
 
-// Конструктор копирования
+    // Конструктор копирования
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::ChunkList(const ChunkList &other) {
         // Реализация логики конструктора копирования здесь
     }
 
-// Конструктор копирования с аллокатором
+    // Конструктор копирования с аллокатором
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::ChunkList(const ChunkList &other, const Allocator &alloc) {
         // Реализация логики конструктора копирования с аллокатором здесь
     }
 
+    // Конструктор перемещения
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::ChunkList(ChunkList &&other) {
 
     }
 
-// Расширенный конструктор перемещения с аллокатором
+    // Расширенный конструктор перемещения с аллокатором
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::ChunkList(ChunkList &&other, const Allocator &alloc) {
         // Реализация логики расширенного конструктора перемещения с аллокатором здесь
     }
 
-// Конструктор с содержимым инициализирующего списка init
+    // Конструктор с содержимым инициализирующего списка init
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::ChunkList(std::initializer_list<T> init, const Allocator &alloc) {
         // Реализация логики конструктора с инициализирующим списком здесь
     }
 
-// Деструктор
+    // Деструктор
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator>::~ChunkList() {
         // Реализация логики деструктора здесь
     }
 
-// Оператор присваивания копирования
+    // Оператор присваивания копирования
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator> &ChunkList<T, N, Allocator>::operator=(const ChunkList &other) {
         // Реализация логики оператора присваивания копирования здесь
         return *this;
     }
 
-// Оператор присваивания перемещения
-//    template<typename T, int N, typename Allocator>
-//    ChunkList<T, N, Allocator> &ChunkList<T, N, Allocator>::operator=(ChunkList &&other) noexcept {
-//        // Реализация логики оператора присваивания перемещения здесь
-//        return *this;
-//    }
-
+    // Оператор присваивания перемещения
     template<typename T, int N, typename Allocator>
     ChunkList<T, N, Allocator> &ChunkList<T, N, Allocator>::operator=(ChunkList &&other) {
         return other;
@@ -1250,73 +1169,73 @@ namespace fefu_laboratory_two {
 //        return tail_->data[tail_->size - 1];
     }
 
-// Возвращает итератор на первый элемент ChunkList
+    // Возвращает итератор, адресующий первый элемент в списке.
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::iterator ChunkList<T, N, Allocator>::begin() noexcept {
         // Реализация логики функции begin здесь
     }
 
-// Возвращает константный итератор на первый элемент ChunkList
+    // Возвращает константный итератор на первый элемент ChunkList
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::const_iterator ChunkList<T, N, Allocator>::begin() const noexcept {
         // Реализация логики функции begin для константного случая здесь
     }
 
-// Возвращает константный итератор на первый элемент ChunkList (аналогично begin())
+    // Возвращает константный итератор на первый элемент ChunkList (аналогично begin())
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::const_iterator ChunkList<T, N, Allocator>::cbegin() const noexcept {
         // Реализация логики функции cbegin здесь
     }
 
-// Возвращает итератор на элемент, следующий за последним элементом ChunkList
+    // Возвращает итератор на элемент, следующий за последним элементом ChunkList
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::iterator ChunkList<T, N, Allocator>::end() noexcept {
         // Реализация логики функции end здесь
     }
 
-// Возвращает константный итератор на элемент, следующий за последним элементом ChunkList
+    // Возвращает константный итератор на элемент, следующий за последним элементом ChunkList
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::const_iterator ChunkList<T, N, Allocator>::end() const noexcept {
         // Реализация логики функции end для константного случая здесь
     }
 
-// Возвращает константный итератор на элемент, следующий за последним элементом ChunkList (аналогично end())
+    // Возвращает константный итератор на элемент, следующий за последним элементом ChunkList (аналогично end())
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::const_iterator ChunkList<T, N, Allocator>::cend() const noexcept {
         // Реализация логики функции cend здесь
     }
 
-// Проверяет, пуст ли контейнер
+    // Проверяет, пуст ли контейнер
     template<typename T, int N, typename Allocator>
     bool ChunkList<T, N, Allocator>::empty() const noexcept {
         // Реализация логики функции empty здесь
     }
 
-// Возвращает количество элементов в контейнере
+    // Возвращает количество элементов в контейнере
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::size_type ChunkList<T, N, Allocator>::size() const noexcept {
         // Реализация логики функции size здесь
     }
 
-// Возвращает максимальное количество элементов, которые контейнер может содержать
+    // Возвращает максимальное количество элементов, которые контейнер может содержать
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::size_type ChunkList<T, N, Allocator>::max_size() const noexcept {
         // Реализация логики функции max_size здесь
     }
 
-// Запрашивает уменьшение неиспользуемой емкости
+    // Запрашивает уменьшение неиспользуемой емкости
     template<typename T, int N, typename Allocator>
     void ChunkList<T, N, Allocator>::shrink_to_fit() {
         // Реализация логики функции shrink_to_fit здесь
     }
 
-// Очищает контейнер, удаляя все элементы
+    // Очищает контейнер, удаляя все элементы
     template<typename T, int N, typename Allocator>
     void ChunkList<T, N, Allocator>::clear() noexcept {
         // Реализация логики функции clear здесь
     }
 
-// Вставляет элемент перед указанным положением pos
+    // Вставляет элемент перед указанным положением pos
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::iterator
     ChunkList<T, N, Allocator>::insert(const_iterator pos, const T &value) {
