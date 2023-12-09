@@ -40,7 +40,7 @@ namespace fefu_laboratory_two {
     template<typename ValueType>
     class ChunkList_iterator {
     private:
-        ValueType* iterator = nullptr;
+        ValueType *iterator = nullptr;
     public:
         using iterator_category = std::random_access_iterator_tag;
         using value_type = ValueType;
@@ -115,7 +115,7 @@ namespace fefu_laboratory_two {
 
         // Реализация оператора <
         friend bool operator<(const ChunkList_iterator<ValueType> &lhs,
-                               const ChunkList_iterator<ValueType> &rhs) {
+                              const ChunkList_iterator<ValueType> &rhs) {
             return lhs.iterator < rhs.iterator;
         }
 
@@ -127,19 +127,19 @@ namespace fefu_laboratory_two {
 
         // Реализация оператора >
         friend bool operator>(const ChunkList_iterator<ValueType> &lhs,
-                               const ChunkList_iterator<ValueType> &rhs) {
+                              const ChunkList_iterator<ValueType> &rhs) {
             return lhs.iterator > rhs.iterator;
         }
 
         // Реализация оператора >=
         friend bool operator>=(const ChunkList_iterator<ValueType> &lhs,
-                              const ChunkList_iterator<ValueType> &rhs) {
+                               const ChunkList_iterator<ValueType> &rhs) {
             return lhs.iterator >= rhs.iterator;
         }
 
         // Реализация оператора <=>
         friend bool operator<=>(const ChunkList_iterator<ValueType> &lhs,
-                              const ChunkList_iterator<ValueType> &rhs) {
+                                const ChunkList_iterator<ValueType> &rhs) {
             return lhs.iterator <=> rhs.iterator;
         }
     };
@@ -147,7 +147,7 @@ namespace fefu_laboratory_two {
     template<typename ValueType>
     class ChunkList_const_iterator {
     private:
-        const ValueType* iterator = nullptr;
+        const ValueType *iterator = nullptr;
     public:
         using iterator_category = std::random_access_iterator_tag;
         using value_type = ValueType;
@@ -227,7 +227,7 @@ namespace fefu_laboratory_two {
 
         // Реализация оператора <
         friend bool operator<(const ChunkList_const_iterator<ValueType> &lhs,
-                               const ChunkList_const_iterator<ValueType> &rhs) {
+                              const ChunkList_const_iterator<ValueType> &rhs) {
             return lhs.iterator < rhs.iterator;
         }
 
@@ -239,7 +239,7 @@ namespace fefu_laboratory_two {
 
         // Реализация оператора >
         friend bool operator>(const ChunkList_const_iterator<ValueType> &lhs,
-                               const ChunkList_const_iterator<ValueType> &rhs) {
+                              const ChunkList_const_iterator<ValueType> &rhs) {
             return lhs.iterator > rhs.iterator;
         }
 
@@ -251,7 +251,7 @@ namespace fefu_laboratory_two {
 
         // Реализация оператора <=>
         friend bool operator<=>(const ChunkList_const_iterator<ValueType> &lhs,
-                               const ChunkList_const_iterator<ValueType> &rhs) {
+                                const ChunkList_const_iterator<ValueType> &rhs) {
             return lhs.iterator <=> rhs.iterator;
         }
     };
@@ -675,41 +675,55 @@ namespace fefu_laboratory_two {
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения ==
         template<class U, class Alloc>
-        friend bool operator==(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs);
+        friend bool operator==(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+            return lhs == rhs;
+        }
 
         /// @brief Проверяет, не равно ли содержимое lhs и rhs.
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения !=
         template<class U, class Alloc>
-        friend bool operator!=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs);
+        friend bool operator!=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+            return lhs != rhs;
+        }
 
         /// @brief Сравнивает содержимое lhs и rhs лексикографически.
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения >
         template<class U, class Alloc>
-        friend bool operator>(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs);
+        friend bool operator>(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+            return lhs > rhs;
+        }
 
         /// @brief Сравнивает содержимое lhs и rhs лексикографически.
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения <
         template<class U, class Alloc>
-        friend bool operator<(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs);
+        friend bool operator<(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+            return lhs < rhs;
+        }
 
         /// @brief Сравнивает содержимое lhs и rhs лексикографически.
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения >=
         template<class U, class Alloc>
-        friend bool operator>=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs);
+        friend bool operator>=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+            return lhs >= rhs;
+        }
 
         /// @brief Сравнивает содержимое lhs и rhs лексикографически.
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения <=
         template<class U, class Alloc>
-        friend bool operator<=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs);
+        friend bool operator<=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+            return lhs <= rhs;
+        }
 
         // Оператор сравнения <=>
         template<class U, class Alloc>
-        friend bool operator<=>(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs);
+        friend bool operator<=>(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+            return lhs <=> rhs;
+        }
     };
 
 /// ФУНКЦИИ, НЕ ЯВЛЯЮЩИЕСЯ ЧЛЕНАМИ
@@ -1172,7 +1186,12 @@ namespace fefu_laboratory_two {
     // Возвращает итератор, адресующий первый элемент в списке.
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::iterator ChunkList<T, N, Allocator>::begin() noexcept {
-        // Реализация логики функции begin здесь
+
+        ChunkList_iterator<T> iteratorParams;
+
+        iterator myIterator(iteratorParams);
+
+        return myIterator;
     }
 
     // Возвращает константный итератор на первый элемент ChunkList
@@ -1190,7 +1209,12 @@ namespace fefu_laboratory_two {
     // Возвращает итератор на элемент, следующий за последним элементом ChunkList
     template<typename T, int N, typename Allocator>
     typename ChunkList<T, N, Allocator>::iterator ChunkList<T, N, Allocator>::end() noexcept {
-        // Реализация логики функции end здесь
+
+        ChunkList_iterator<T> iteratorParams;
+
+        iterator myIterator(iteratorParams);
+
+        return myIterator;
     }
 
     // Возвращает константный итератор на элемент, следующий за последним элементом ChunkList
@@ -1357,49 +1381,6 @@ namespace fefu_laboratory_two {
     template<typename T, int N, typename Allocator>
     void ChunkList<T, N, Allocator>::swap(ChunkList &other) {
         // Реализация логики функции swap здесь
-    }
-
-
-// Оператор сравнения ==
-    template<class U, class Alloc>
-    bool operator==(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
-        return lhs == rhs;
-    }
-
-// Оператор сравнения !=
-    template<class U, class Alloc>
-    bool operator!=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
-        return !(lhs == rhs);
-    }
-
-// Оператор сравнения >
-    template<class U, class Alloc>
-    bool operator>(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
-        return lhs > rhs;
-    }
-
-// Оператор сравнения <
-    template<class U, class Alloc>
-    bool operator<(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
-        return lhs < rhs;
-    }
-
-// Оператор сравнения >=
-    template<class U, class Alloc>
-    bool operator>=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
-        return lhs >= rhs;
-    }
-
-// Оператор сравнения <=
-    template<class U, class Alloc>
-    bool operator<=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
-        return lhs <= rhs;
-    }
-
-// Оператор сравнения <=>
-    template<class U, class Alloc>
-    bool operator<=>(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
-        return lhs <=> rhs;
     }
 
 // Функция обмена содержимым двух контейнеров
