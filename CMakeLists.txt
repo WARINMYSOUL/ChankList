@@ -3,4 +3,6 @@ project(ChankList)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(ChankList ChunkList.cpp ChunkList.h)
+add_executable(ChankList ChunkList.hpp
+        main.cpp
+)
