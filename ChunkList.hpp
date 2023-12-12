@@ -3,6 +3,7 @@
 #include <iterator>
 #include <memory>
 #include <list>
+#include <algorithm>
 
 namespace fefu_laboratory_two {
 
@@ -12,21 +13,26 @@ namespace fefu_laboratory_two {
         using value_type = T;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
-        using pointer = T *;
-        using const_pointer = const T *;
-        using reference = T &;
-        using const_reference = const T &;
+        using pointer = T*;
+        using const_pointer = const T*;
+        using reference = T&;
+        using const_reference = const T&;
+
+    private:
+        size_type n = 0;
+        pointer p;
+
+    public:
 
         // Реализация конструктора по умолчанию
         Allocator() noexcept = default;
 
         // Реализация конструктора копирования
-        Allocator(const Allocator &other) noexcept = default;
+        Allocator(const Allocator& other) noexcept = default;
 
         // Реализация конструктора копирования от другого типа
         template<class U>
-        explicit Allocator(const Allocator<U> &other) noexcept {
-
+        explicit Allocator(const Allocator<U>& other) noexcept {
         }
 
         // Реализация деструктора
@@ -34,56 +40,80 @@ namespace fefu_laboratory_two {
 
         // Реализация выделения памяти
         pointer allocate(size_type n) {
-            return static_cast<pointer>(::operator new(n * sizeof(T)));
+            this->n = n;
+            auto ptr = static_cast<pointer>(malloc(sizeof(value_type) * n));
+            if (!ptr) {
+                throw std::bad_alloc();
+            }
+            p = ptr;
+            return ptr;
         }
 
         // Реализация освобождения памяти
-        void deallocate(pointer p, size_type n) noexcept {
-            ::operator delete(p);
+        void deallocate() noexcept {
+            (void)n;
+            free(p);
+        }
+
+        template<typename... Args>
+        void construct(pointer p, const Args &... args) {
+            new(p) value_type{ args... };
+        }
+
+        // Делегированный конструктор, который принимает initializer_list
+        void construct(pointer p, std::initializer_list<value_type> initList) {
+            // Копируем элементы из initializer_list в выделенную память
+            std::uninitialized_copy(initList.begin(), initList.end(), p);
         }
     };
 
     template<typename ValueType>
     class ChunkList_iterator {
-    private:
-        ValueType *iterator = nullptr;
     public:
         using iterator_category = std::random_access_iterator_tag;
         using value_type = ValueType;
         using difference_type = std::ptrdiff_t;
-        using pointer = ValueType *;
-        using reference = ValueType &;
+        using pointer = ValueType*;
+        using reference = ValueType&;
+    private:
+        pointer iterator;
+    public:
 
         // Реализация конструктора по умолчанию
         ChunkList_iterator() noexcept = default;
 
+        ChunkList_iterator(pointer p) noexcept {
+            iterator = p;
+        };
+
         // Реализация конструктора копирования
-        ChunkList_iterator(const ChunkList_iterator &other) noexcept {
+        ChunkList_iterator(const ChunkList_iterator& other) noexcept {
 
         }
 
         // Реализация оператора присваивания
-        ChunkList_iterator &operator=(const ChunkList_iterator &) {
-
+        ChunkList_iterator& operator=(const ChunkList_iterator& other) {
+            iterator = other.iterator;
+            return *this;
         }
 
         // Реализация деструктора
         ~ChunkList_iterator() = default;
 
         // Реализация функции swap
-        friend void swap(ChunkList_iterator<ValueType> &lhs, ChunkList_iterator<ValueType> &rhs) {
+        friend void swap(ChunkList_iterator<ValueType>& lhs, ChunkList_iterator<ValueType>& rhs) {
 
         }
 
         // Реализация оператора ==
-        friend bool operator==(const ChunkList_iterator<ValueType> &lhs,
-                               const ChunkList_iterator<ValueType> &rhs) {
+        friend bool operator==(const ChunkList_iterator<ValueType>& lhs,
+                               const ChunkList_iterator<ValueType>& rhs) {
             return lhs.iterator == rhs.iterator;
         }
 
         // Реализация оператора !=
-        friend bool operator!=(const ChunkList_iterator<ValueType> &lhs,
-                               const ChunkList_iterator<ValueType> &rhs) {
+        friend bool operator!=(const ChunkList_iterator<ValueType>& lhs,
+                               const ChunkList_iterator<ValueType>& rhs) {
             return lhs.iterator != rhs.iterator;
         }
 
@@ -98,7 +128,8 @@ namespace fefu_laboratory_two {
         }
 
         // Реализация оператора префиксного инкремента
-        ChunkList_iterator &operator++() {
+        ChunkList_iterator& operator++() {
+            iterator += 1;
             return *this;
         }
 
@@ -110,7 +141,7 @@ namespace fefu_laboratory_two {
         }
 
         // Реализация оператора префиксного декремента
-        ChunkList_iterator &operator--() {
+        ChunkList_iterator& operator--() {
             return *this;
         }
 
@@ -122,101 +153,103 @@ namespace fefu_laboratory_two {
         }
 
         // Реализация оператора сложения с числом
-        ChunkList_iterator operator+(const difference_type &n) const {
-//            ChunkList_iterator temp(*this);
-//            temp.pointer += n;
-//            return temp;
+        ChunkList_iterator operator+(const difference_type& n) const {
+            //            ChunkList_iterator temp(*this);
+            //            temp.pointer += n;
+            //            return temp;
         }
 
         // Реализация оператора присваивания сложения с числом
-        ChunkList_iterator &operator+=(const difference_type &) {
+        ChunkList_iterator& operator+=(const difference_type&) {
             return *this;
         }
 
         // Реализация оператора вычитания из числа
-        ChunkList_iterator operator-(const difference_type &n) const {
-//            ChunkList_iterator temp(*this);
-//            temp.pointer -= n;
-//            return temp;
+        ChunkList_iterator operator-(const difference_type& n) const {
+            //            ChunkList_iterator temp(*this);
+            //            temp.pointer -= n;
+            //            return temp;
         }
 
         // Реализация оператора присваивания вычитания из числа
-        ChunkList_iterator &operator-=(const difference_type &) {
+        ChunkList_iterator& operator-=(const difference_type&) {
             return *this;
         }
 
         // Реализация оператора вычитания двух итераторов
-        difference_type operator-(const ChunkList_iterator &) const {
+        difference_type operator-(const ChunkList_iterator&) const {
             return *this;
         }
 
         // Реализация оператора индексации
-        reference operator[](const difference_type &n) {
+        reference operator[](const difference_type& n) {
             return *(*this + n);
         }
 
         // Реализация оператора <
-        friend bool operator<(const ChunkList_iterator<ValueType> &lhs,
-                              const ChunkList_iterator<ValueType> &rhs) {
+        friend bool operator<(const ChunkList_iterator<ValueType>& lhs,
+                              const ChunkList_iterator<ValueType>& rhs) {
             return lhs.iterator < rhs.iterator;
         }
 
         // Реализация оператора <=
-        friend bool operator<=(const ChunkList_iterator<ValueType> &lhs,
-                               const ChunkList_iterator<ValueType> &rhs) {
+        friend bool operator<=(const ChunkList_iterator<ValueType>& lhs,
+                               const ChunkList_iterator<ValueType>& rhs) {
             return lhs.iterator <= rhs.iterator;
         }
 
         // Реализация оператора >
-        friend bool operator>(const ChunkList_iterator<ValueType> &lhs,
-                              const ChunkList_iterator<ValueType> &rhs) {
+        friend bool operator>(const ChunkList_iterator<ValueType>& lhs,
+                              const ChunkList_iterator<ValueType>& rhs) {
             return lhs.iterator > rhs.iterator;
         }
 
         // Реализация оператора >=
-        friend bool operator>=(const ChunkList_iterator<ValueType> &lhs,
-                               const ChunkList_iterator<ValueType> &rhs) {
+        friend bool operator>=(const ChunkList_iterator<ValueType>& lhs,
+                               const ChunkList_iterator<ValueType>& rhs) {
             return lhs.iterator >= rhs.iterator;
         }
 
         // Реализация оператора <=>
-        friend bool operator<=>(const ChunkList_iterator<ValueType> &lhs,
-                                const ChunkList_iterator<ValueType> &rhs) {
+        friend bool operator<=>(const ChunkList_iterator<ValueType>& lhs,
+                                const ChunkList_iterator<ValueType>& rhs) {
             return lhs.iterator <=> rhs.iterator;
         }
     };
 
     template<typename ValueType>
     class ChunkList_const_iterator {
-    private:
-        const ValueType *iterator = nullptr;
     public:
         using iterator_category = std::random_access_iterator_tag;
         using value_type = ValueType;
         using difference_type = std::ptrdiff_t;
-        using pointer = const ValueType *;
-        using reference = const ValueType &;
+        using pointer = const ValueType*;
+        using reference = const ValueType&;
 
+    private:
+        const value_type* iterator;
+
+    public:
         // Реализация конструктора от обычного итератора
         ChunkList_const_iterator() noexcept = default;
 
         // Реализация конструктора копирования
-        ChunkList_const_iterator(const ChunkList_const_iterator &) noexcept {
+        ChunkList_const_iterator(const ChunkList_const_iterator&) noexcept {
 
         }
 
         // Реализация конструктора от обычного итератора
-        ChunkList_const_iterator(const ChunkList_iterator<ValueType> &) noexcept {
+        ChunkList_const_iterator(const ChunkList_iterator<ValueType>&) noexcept {
 
         }
 
         // Реализация оператора присваивания
-        ChunkList_const_iterator &operator=(const ChunkList_const_iterator &) {
+        ChunkList_const_iterator& operator=(const ChunkList_const_iterator&) {
             return *this;
         }
 
         // Реализация оператора присваивания от обычного итератора
-        ChunkList_const_iterator &operator=(const ChunkList_iterator<ValueType> &) {
+        ChunkList_const_iterator& operator=(const ChunkList_iterator<ValueType>&) {
             return *this;
         }
 
@@ -224,26 +257,26 @@ namespace fefu_laboratory_two {
         ~ChunkList_const_iterator() = default;
 
         // Реализация функции swap
-        friend void swap(ChunkList_const_iterator<ValueType> &lhs,
-                         ChunkList_const_iterator<ValueType> &rhs) {
+        friend void swap(ChunkList_const_iterator<ValueType>& lhs,
+                         ChunkList_const_iterator<ValueType>& rhs) {
 
         }
 
         // Реализация оператора ==
-        friend bool operator==(const ChunkList_const_iterator<ValueType> &lhs,
-                               const ChunkList_const_iterator<ValueType> &rhs) {
+        friend bool operator==(const ChunkList_const_iterator<ValueType>& lhs,
+                               const ChunkList_const_iterator<ValueType>& rhs) {
             return lhs.iterator == rhs.iterator;
         }
 
         // Реализация оператора !=
-        friend bool operator!=(const ChunkList_const_iterator<ValueType> &lhs,
-                               const ChunkList_const_iterator<ValueType> &rhs) {
+        friend bool operator!=(const ChunkList_const_iterator<ValueType>& lhs,
+                               const ChunkList_const_iterator<ValueType>& rhs) {
             return lhs.iterator != rhs.iterator;
         }
 
         // Реализация оператора разыменования *
         reference operator*() const {
-
+            return *iterator;
         }
 
         // Реализация оператора ->
@@ -252,7 +285,8 @@ namespace fefu_laboratory_two {
         }
 
         // Реализация оператора префиксного инкремента
-        ChunkList_const_iterator &operator++() {
+        ChunkList_const_iterator& operator++() {
+            iterator += 1;
             return *this;
         }
 
@@ -264,7 +298,7 @@ namespace fefu_laboratory_two {
         }
 
         // Реализация оператора префиксного декремента
-        ChunkList_const_iterator &operator--() {
+        ChunkList_const_iterator& operator--() {
             return *this;
         }
 
@@ -276,62 +310,62 @@ namespace fefu_laboratory_two {
         }
 
         // Реализация оператора сложения с числом
-        ChunkList_const_iterator operator+(const difference_type &) const {
+        ChunkList_const_iterator operator+(const difference_type&) const {
             return *this;
         }
 
         // Реализация оператора присваивания сложения с числом
-        ChunkList_const_iterator &operator+=(const difference_type &) {
+        ChunkList_const_iterator& operator+=(const difference_type&) {
             return *this;
         }
 
         // Реализация оператора вычитания из числа
-        ChunkList_const_iterator operator-(const difference_type &) const {
+        ChunkList_const_iterator operator-(const difference_type&) const {
             return *this;
         }
 
         // Реализация оператора присваивания вычитания из числа
-        ChunkList_const_iterator &operator-=(const difference_type &) {
+        ChunkList_const_iterator& operator-=(const difference_type&) {
             return *this;
         }
 
         // Реализация оператора вычитания двух итераторов
-        difference_type operator-(const ChunkList_const_iterator &) const {
+        difference_type operator-(const ChunkList_const_iterator&) const {
             return *this;
         }
 
         // Реализация оператора индексации
-        reference operator[](const difference_type &) {
+        reference operator[](const difference_type&) {
             return *this;
         }
 
         // Реализация оператора <
-        friend bool operator<(const ChunkList_const_iterator<ValueType> &lhs,
-                              const ChunkList_const_iterator<ValueType> &rhs) {
+        friend bool operator<(const ChunkList_const_iterator<ValueType>& lhs,
+                              const ChunkList_const_iterator<ValueType>& rhs) {
             return lhs.iterator < rhs.iterator;
         }
 
         // Реализация оператора <=
-        friend bool operator<=(const ChunkList_const_iterator<ValueType> &lhs,
-                               const ChunkList_const_iterator<ValueType> &rhs) {
+        friend bool operator<=(const ChunkList_const_iterator<ValueType>& lhs,
+                               const ChunkList_const_iterator<ValueType>& rhs) {
             return lhs.iterator <= rhs.iterator;
         }
 
         // Реализация оператора >
-        friend bool operator>(const ChunkList_const_iterator<ValueType> &lhs,
-                              const ChunkList_const_iterator<ValueType> &rhs) {
+        friend bool operator>(const ChunkList_const_iterator<ValueType>& lhs,
+                              const ChunkList_const_iterator<ValueType>& rhs) {
             return lhs.iterator > rhs.iterator;
         }
 
         // Реализация оператора >=
-        friend bool operator>=(const ChunkList_const_iterator<ValueType> &lhs,
-                               const ChunkList_const_iterator<ValueType> &rhs) {
+        friend bool operator>=(const ChunkList_const_iterator<ValueType>& lhs,
+                               const ChunkList_const_iterator<ValueType>& rhs) {
             return lhs.iterator >= rhs.iterator;
         }
 
         // Реализация оператора <=>
-        friend bool operator<=>(const ChunkList_const_iterator<ValueType> &lhs,
-                                const ChunkList_const_iterator<ValueType> &rhs) {
+        friend bool operator<=>(const ChunkList_const_iterator<ValueType>& lhs,
+                                const ChunkList_const_iterator<ValueType>& rhs) {
             return lhs.iterator <=> rhs.iterator;
         }
     };
@@ -343,14 +377,20 @@ namespace fefu_laboratory_two {
         using allocator_type = Allocator;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
-        using reference = value_type &;
-        using const_reference = const value_type &;
+        using reference = value_type&;
+        using const_reference = const value_type&;
         using pointer = typename std::allocator_traits<Allocator>::pointer;
         using const_pointer = typename std::allocator_traits<Allocator>::const_pointer;
         using iterator = ChunkList_iterator<value_type>;
         using const_iterator = ChunkList_const_iterator<value_type>;
 
+    private:
+        iterator it = ChunkList_iterator<int>();
+        pointer p;
+        Allocator alloc;
 
+
+    public:
         /// @brief Конструктор по умолчанию. Создает пустой контейнер с
         /// аллокатором, сконструированным по умолчанию.
         // Конструктор по умолчанию
@@ -359,7 +399,7 @@ namespace fefu_laboratory_two {
         /// @brief Создает пустой контейнер с заданным аллокатором
         /// @param alloc аллокатор, который будет использоваться для всех выделений памяти этого контейнера
         // Конструктор с аллокатором
-        explicit ChunkList(const Allocator &alloc) {
+        explicit ChunkList(const Allocator& alloc) {
 
         }
 
@@ -369,7 +409,7 @@ namespace fefu_laboratory_two {
         /// @param value значение, которым инициализируются элементы контейнера
         /// @param alloc аллокатор, который будет использоваться для всех выделений памяти этого контейнера
         // Конструктор с count копиями элементов со значением и аллокатором
-        ChunkList(size_type count, const T &value, const Allocator &alloc = Allocator()) {
+        ChunkList(size_type count, const T& value, const Allocator& alloc = Allocator()) {
 
         }
 
@@ -378,7 +418,7 @@ namespace fefu_laboratory_two {
         /// @param count размер контейнера
         /// @param alloc аллокатор, который будет использоваться для всех выделений памяти этого контейнера
         // Конструктор с count экземплярами T, вставленными по умолчанию
-        explicit ChunkList(size_type count, const Allocator &alloc = Allocator()) {
+        explicit ChunkList(size_type count, const Allocator& alloc = Allocator()) {
 
         }
 
@@ -389,7 +429,7 @@ namespace fefu_laboratory_two {
         /// @param alloc аллокатор, который будет использоваться для всех выделений памяти этого контейнера
         // Конструктор с содержимым диапазона [first, last)
         template<class InputIt>
-        ChunkList(InputIt first, InputIt last, const Allocator &alloc = Allocator()) {
+        ChunkList(InputIt first, InputIt last, const Allocator& alloc = Allocator()) {
 
         }
 
@@ -398,7 +438,7 @@ namespace fefu_laboratory_two {
         /// @param other другой контейнер, который будет использоваться в качестве источника для инициализации
         /// элементов контейнера
         // Конструктор копирования
-        ChunkList(const ChunkList &other) = default;
+        ChunkList(const ChunkList& other) = default;
 
         /// @brief Конструирует контейнер с копией содержимого other,
         /// используя alloc в качестве аллокатора.
@@ -406,7 +446,7 @@ namespace fefu_laboratory_two {
         /// элементы контейнера с
         /// @param alloc аллокатор, который будет использоваться для всех выделений памяти этого контейнера
         // Конструктор копирования с аллокатором
-        ChunkList(const ChunkList &other, const Allocator &alloc) {
+        ChunkList(const ChunkList& other, const Allocator& alloc) {
 
         }
 
@@ -421,7 +461,7 @@ namespace fefu_laboratory_two {
          * элементов контейнера
          */
         // Конструктор перемещения
-        ChunkList(ChunkList &&other)  noexcept {
+        ChunkList(ChunkList&& other) noexcept {
 
         }
 
@@ -436,7 +476,7 @@ namespace fefu_laboratory_two {
          * @param alloc аллокатор, который будет использоваться для всех выделений памяти этого контейнера
          */
         // Расширенный конструктор перемещения с аллокатором
-        ChunkList(ChunkList &&other, const Allocator &alloc) {
+        ChunkList(ChunkList&& other, const Allocator& alloc) {
 
         }
 
@@ -447,19 +487,24 @@ namespace fefu_laboratory_two {
         /// @param alloc аллокатор, который будет использоваться для всех выделений памяти этого контейнера
         // Конструктор с содержимым инициализирующего списка init
         ChunkList(std::initializer_list<T> init, Allocator alloc = Allocator()) {
-            alloc.allocate(init.size());
+            auto ptr = alloc.allocate(init.size());
+            alloc.construct(ptr, init);
+            p = ptr;
+            this->alloc=alloc;
         }
 
         /// @brief Уничтожает список ChunkList.
         // Деструктор
-        ~ChunkList() = default;
+        ~ChunkList() {
+            alloc.deallocate();
+        };
 
         /// @brief Оператор присвоения копий. Заменяет содержимое копией
         /// содержимое других.
         /// @param other другой контейнер для использования в качестве источника данных
         /// @return *this
         // Оператор присваивания копирования
-        ChunkList &operator=(const ChunkList &other) {
+        ChunkList& operator=(const ChunkList& other) {
             return *this;
         }
 
@@ -474,7 +519,7 @@ namespace fefu_laboratory_two {
          * @return *this
          */
         // Оператор присваивания перемещения
-        ChunkList &operator=(ChunkList &&other) {
+        ChunkList& operator=(ChunkList&& other) {
             return other;
         }
 
@@ -483,7 +528,7 @@ namespace fefu_laboratory_two {
         /// @param ilist
         /// @return this
         // Оператор присваивания инициализирующего списка
-        ChunkList &operator=(std::initializer_list<T> ilist) {
+        ChunkList& operator=(std::initializer_list<T> ilist) {
             return *this;
         }
 
@@ -491,7 +536,7 @@ namespace fefu_laboratory_two {
         /// @param count
         /// @param value
         // Функция замены содержимого указанным количеством копий значения
-        void assign(size_type count, const T &value) {
+        void assign(size_type count, const T& value) {
 
         }
 
@@ -612,11 +657,9 @@ namespace fefu_laboratory_two {
         /// @return Итератор к первому элементу.
         // Возвращает итератор на первый элемент ChunkList
         iterator begin() noexcept {
-            ChunkList_iterator<T> iteratorParams;
+            ChunkList_iterator<value_type> iteratorParams(p);
 
-            iterator myIterator(iteratorParams);
-
-            return myIterator;
+            return iteratorParams;
         }
 
         /// @brief Возвращает итератор к первому элементу списка ChunkList.
@@ -639,11 +682,9 @@ namespace fefu_laboratory_two {
         /// @return Итератор к элементу, следующему за последним элементом.
         // Возвращает итератор на элемент, следующий за последним элементом ChunkList
         iterator end() noexcept {
-            ChunkList_iterator<T> iteratorParams;
+            ChunkList_iterator<T> iteratorParams(p + N);
 
-            iterator myIterator(iteratorParams);
-
-            return myIterator;
+            return iteratorParams;
         }
 
         /// @brief Возвращает постоянный итератор к элементу, следующему за последним
@@ -709,7 +750,7 @@ namespace fefu_laboratory_two {
         /// @param value значение элемента для вставки
         /// @return указывающий на вставленное значение.
         // Вставляет элемент перед указанным положением pos
-        iterator insert(const_iterator pos, const T &value) {
+        iterator insert(const_iterator pos, const T& value) {
 
         }
 
@@ -718,7 +759,7 @@ namespace fefu_laboratory_two {
         /// @param value значение элемента для вставки
         /// @return Итератор, указывающий на вставленное значение.
         // Вставляет элемент перед указанным положением pos
-        iterator insert(const_iterator pos, T &&value) {
+        iterator insert(const_iterator pos, T&& value) {
 
         }
 
@@ -729,7 +770,7 @@ namespace fefu_laboratory_two {
         /// @return Итератор, указывающий на первый вставленный элемент, или pos, если count
         /// == 0.
         // Вставляет count копий значения перед указанным положением pos
-        iterator insert(const_iterator pos, size_type count, const T &value) {
+        iterator insert(const_iterator pos, size_type count, const T& value) {
 
         }
 
@@ -786,7 +827,7 @@ namespace fefu_laboratory_two {
         /// Новый элемент инициализируется как копия value.
         /// @param value значение элемента для добавления
         // Добавляет элемент в конец контейнера
-        void push_back(const T &value) {
+        void push_back(const T& value) {
 
         }
 
@@ -794,7 +835,7 @@ namespace fefu_laboratory_two {
         /// Значение перемещается в новый элемент.
         /// @param value value значение элемента для добавления
         // Добавляет элемент в конец контейнера с использованием std::move
-        void push_back(T &&value) {
+        void push_back(T&& value) {
 
         }
 
@@ -816,14 +857,14 @@ namespace fefu_laboratory_two {
         /// @brief Добавляет значение заданного элемента в начало контейнера.
         /// @param value значение элемента, который нужно добавить
         // Добавляет элемент в начало контейнера
-        void push_front(const T &value) {
+        void push_front(const T& value) {
 
         }
 
         /// @brief Добавляет значение заданного элемента в начало контейнера.
         /// @param value moved значение элемента для добавления
         // Добавляет элемент в начало контейнера с использованием std::move
-        void push_front(T &&value) {
+        void push_front(T&& value) {
 
         }
 
@@ -859,7 +900,7 @@ namespace fefu_laboratory_two {
         /// @param count новый размер контейнера
         /// @param value значение, которым инициализируются новые элементы
         // Изменяет размер контейнера, чтобы содержать count элементов и инициализирует новые элементы значением value
-        void resize(size_type count, const value_type &value) {
+        void resize(size_type count, const value_type& value) {
 
         }
 
@@ -869,7 +910,7 @@ namespace fefu_laboratory_two {
         /// аннулируется.
         /// @param other container to exchange the contents with
         // Обменивает содержимое контейнера с содержимым другого контейнера
-        void swap(ChunkList &other) {
+        void swap(ChunkList& other) {
 
         }
 
@@ -879,7 +920,7 @@ namespace fefu_laboratory_two {
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения ==
         template<class U, class Alloc>
-        friend bool operator==(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+        friend bool operator==(const ChunkList<U, 0, Alloc>& lhs, const ChunkList<U, 0, Alloc>& rhs) {
             return lhs == rhs;
         }
 
@@ -887,7 +928,7 @@ namespace fefu_laboratory_two {
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения !=
         template<class U, class Alloc>
-        friend bool operator!=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+        friend bool operator!=(const ChunkList<U, 0, Alloc>& lhs, const ChunkList<U, 0, Alloc>& rhs) {
             return lhs != rhs;
         }
 
@@ -895,7 +936,7 @@ namespace fefu_laboratory_two {
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения >
         template<class U, class Alloc>
-        friend bool operator>(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+        friend bool operator>(const ChunkList<U, 0, Alloc>& lhs, const ChunkList<U, 0, Alloc>& rhs) {
             return lhs > rhs;
         }
 
@@ -903,7 +944,7 @@ namespace fefu_laboratory_two {
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения <
         template<class U, class Alloc>
-        friend bool operator<(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+        friend bool operator<(const ChunkList<U, 0, Alloc>& lhs, const ChunkList<U, 0, Alloc>& rhs) {
             return lhs < rhs;
         }
 
@@ -911,7 +952,7 @@ namespace fefu_laboratory_two {
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения >=
         template<class U, class Alloc>
-        friend bool operator>=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+        friend bool operator>=(const ChunkList<U, 0, Alloc>& lhs, const ChunkList<U, 0, Alloc>& rhs) {
             return lhs >= rhs;
         }
 
@@ -919,24 +960,24 @@ namespace fefu_laboratory_two {
         /// @param lhs,rhs ChunkLists, содержимое которых нужно сравнить
         // Оператор сравнения <=
         template<class U, class Alloc>
-        friend bool operator<=(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+        friend bool operator<=(const ChunkList<U, 0, Alloc>& lhs, const ChunkList<U, 0, Alloc>& rhs) {
             return lhs <= rhs;
         }
 
         // Оператор сравнения <=>
         template<class U, class Alloc>
-        friend bool operator<=>(const ChunkList<U, 0, Alloc> &lhs, const ChunkList<U, 0, Alloc> &rhs) {
+        friend bool operator<=>(const ChunkList<U, 0, Alloc>& lhs, const ChunkList<U, 0, Alloc>& rhs) {
             return lhs <=> rhs;
         }
     };
 
-/// ФУНКЦИИ, НЕ ЯВЛЯЮЩИЕСЯ ЧЛЕНАМИ
+    /// ФУНКЦИИ, НЕ ЯВЛЯЮЩИЕСЯ ЧЛЕНАМИ
 
-/// @brief Меняет местами содержимое lhs и rhs.
-/// @param lhs,rhs контейнеры, содержимое которых нужно поменять местами
+    /// @brief Меняет местами содержимое lhs и rhs.
+    /// @param lhs,rhs контейнеры, содержимое которых нужно поменять местами
     // Функция обмена содержимым двух контейнеров
     template<class T, class Alloc>
-    void swap(ChunkList<T, 0, Alloc> &lhs, ChunkList<T, 0, Alloc> &rhs);
+    void swap(ChunkList<T, 0, Alloc>& lhs, ChunkList<T, 0, Alloc>& rhs);
 
     /// @brief Стирает из контейнера все элементы, которые сравниваются с value.
     /// @param c контейнер, из которого нужно стереть
@@ -944,7 +985,7 @@ namespace fefu_laboratory_two {
     /// @return Количество стертых элементов.
     // Функция удаления всех элементов, равных заданному значению, из контейнера
     template<class T, class Alloc, class U>
-    typename ChunkList<T, 0, Alloc>::size_type erase(ChunkList<T, 0, Alloc> &c, const U &value);
+    typename ChunkList<T, 0, Alloc>::size_type erase(ChunkList<T, 0, Alloc>& c, const U& value);
 
     /// @brief Стирает из контейнера все элементы, которые сравниваются с value.
     /// @param c контейнер, из которого нужно стереть
@@ -953,5 +994,6 @@ namespace fefu_laboratory_two {
     /// @return Количество стертых элементов.
     // Функция удаления всех элементов, удовлетворяющих предикату, из контейнера
     template<class T, class Alloc, class Pred>
-    typename ChunkList<T, 0, Alloc>::size_type erase_if(ChunkList<T, 0, Alloc> &c, Pred pred);
+    typename ChunkList<T, 0, Alloc>::size_type erase_if(ChunkList<T, 0, Alloc>& c, Pred pred);
+
 }
